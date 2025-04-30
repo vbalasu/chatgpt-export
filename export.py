@@ -3,13 +3,34 @@ from playwright.sync_api import sync_playwright
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page()
-    page.goto("https://example.com", wait_until="networkidle")
+    page.goto("https://chatgpt.com/share/6810cca4-ff2c-8001-9773-2ae4a3adf124", wait_until="networkidle")
 
     page.evaluate("""
-        banner = document.createElement('div');
-        banner.textContent = 'Hello from Python!';
-        banner.style.cssText = 'position:fixed; inset:0; display:grid; place-items:center; font:900 3rem/1 system-ui; color:white; background:rgba(0,0,0,.7);';
-        document.body.append(banner);
+        (function() {
+            var customStyles = `
+                :not(.katex):not(.katex *) {
+                    font-family: Arial, sans-serif !important;
+                }
+                :not(.katex) code:not(.katex *), :not(.katex) span:not(.katex *) {
+                    font-family: Menlo, monospace !important;
+                    white-space: pre-wrap !important;
+                    overflow-wrap: break-word !important;
+                }
+                :not(.katex) .overflow-auto:not(.katex *), :not(.katex *) .overflow-auto {
+                    overflow: visible !important;
+                }
+                :not(.katex) .h-full:not(.katex *), :not(.katex *) .h-full {
+                    height: auto !important;
+                }
+                :not(.katex) #text:not(.katex *), :not(.katex *) #text {
+                    white-space: pre-wrap !important;
+                }
+            `;
+            var styleSheet = document.createElement('style');
+            styleSheet.type = 'text/css';
+            styleSheet.innerText = customStyles;
+            document.head.appendChild(styleSheet);
+        })();
     """)
     page.wait_for_timeout(0)
     page.pdf(path="page.pdf", format="Letter", print_background=True)
