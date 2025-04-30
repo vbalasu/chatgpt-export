@@ -30,8 +30,20 @@ with sync_playwright() as p:
             styleSheet.type = 'text/css';
             styleSheet.innerText = customStyles;
             document.head.appendChild(styleSheet);
+            // Hide the "Skip to content" link
+            document.querySelector('a[href="#main"]').style.display = 'none';
         })();
     """)
     page.wait_for_timeout(0)
-    page.pdf(path="page.pdf", format="Letter", print_background=True)
+    page.pdf(
+        path="page.pdf",
+        format="Letter",
+        print_background=True,
+        margin={
+            "top": "0.5in",
+            "right": "0.5in",
+            "bottom": "0.5in",
+            "left": "0.5in"
+        }
+    )
     browser.close()
