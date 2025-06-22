@@ -36,7 +36,7 @@ def export_pdf(url, output_file="page.pdf"):
                 document.querySelector('a[href="#main"]').style.display = 'none';
             })();
         """)
-        page.wait_for_timeout(0)
+        page.wait_for_timeout(1000)
         page.pdf(
             path=output_file,
             format="Letter",
