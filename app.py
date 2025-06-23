@@ -1,10 +1,10 @@
 # coding: utf-8
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, render_template
 from export import export_pdf
-app = Flask(__name__)
+app = Flask(__name__, static_folder='media')
 @app.route('/')
 def hello():
-    return '<h1>USAGE</h1><p>https://chatgpt-export.cloudmatica.com/pdf?url=<strong>https://chatgpt.com/share/YOUR_CHATGPT_SHARE_CODE</strong></p>'
+    return render_template('index.html')
 
 @app.route('/pdf')
 def export_to_pdf():
